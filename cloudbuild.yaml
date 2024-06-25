@@ -1,0 +1,22 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/apis-424409/myproject", "."]
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/apis-424409/myproject"]
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "run",
+        "deploy",
+        "myproject",
+        "--image",
+        "gcr.io/apis-424409/myproject",
+        "--platform",
+        "managed",
+        "--region",
+        "us-central1",
+        "--add-cloudsql-instances",
+        "apis-424409:us-central1:storyvord",
+      ]
+images:
+  - "gcr.io/apis-424409/myproject"
